@@ -1,13 +1,14 @@
 package com.study.junitproject.domain;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -72,6 +73,7 @@ public class BookRepositoryTest {
         assertThat(books.size()).isEqualTo(1);
     }
     // 3. 책 한건보기
+    @Sql("classpath:db/tableInit.sql") //Auto_Increment 초기화, id로 찾는 test 사용시
     @Test
     public void 책한건보기_test(){
         //given
@@ -85,7 +87,20 @@ public class BookRepositoryTest {
         assertThat(findBook.getTitle()).isEqualTo(title);
         assertThat(findBook.getAuthor()).isEqualTo(author);
     }
-    // 4. 책 수정
+    // 4. 책 삭제
+    @Sql("classpath:db/tableInit.sql") //Auto_Increment 초기화, id로 찾는 test 사용시
+    @Test
+    public void 책삭제_test(){
+        //given
+        Long id = 1L;
 
-    // 5. 책 삭제
+        //when
+        bookRepository.deleteById(1L);
+
+        //then
+        assertThat(bookRepository.findById(id).isEmpty()).isTrue();
+    }
+
+    // 5. 책 수정
+
 }
