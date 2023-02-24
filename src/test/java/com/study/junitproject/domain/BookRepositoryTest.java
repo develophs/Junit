@@ -102,5 +102,27 @@ public class BookRepositoryTest {
     }
 
     // 5. 책 수정
+    @Sql("classpath:db/tableInit.sql") //Auto_Increment 초기화, id로 찾는 test 사용시
+    @Test
+    public void 책수정_test(){
+        //given
+        Long id = 1L;
+        String title = "Mockito";
+        String author = "whale";
+
+        Book book = new Book(id, title, author);
+        bookRepository.save(book);
+        // beforeEach -> merge
+        // 본 코드에서는 더티체킹 해야한다.
+
+        //when
+        Book findBook = bookRepository.findById(id).orElseThrow();
+
+        //then
+        assertThat(book.getId()).isEqualTo(1L);
+        assertThat(book.getTitle()).isEqualTo(title);
+        assertThat(book.getAuthor()).isEqualTo(author);
+    }
+
 
 }
