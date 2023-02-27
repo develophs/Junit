@@ -2,6 +2,7 @@ package com.study.junitproject.service;
 
 import com.study.junitproject.domain.Book;
 import com.study.junitproject.domain.BookRepository;
+import com.study.junitproject.util.MailSender;
 import com.study.junitproject.web.dto.BookRespDto;
 import com.study.junitproject.web.dto.BookSaveReqDto;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,17 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final MailSender mailSender;
 
     //1.책 등록
     @Transactional
     public BookRespDto 책등록하기(BookSaveReqDto dto){
         Book savedBook = bookRepository.save(dto.toEntity());
+        if (savedBook != null){
+            if(!mailSender.send()){
+                throw new RuntimeException("메일이 전송되지 않았습니다");
+            }
+        }
         return new BookRespDto().toDto(savedBook);
     }
 
