@@ -46,5 +46,11 @@ public class BookService {
         bookRepository.deleteById(id);//id == null -> IllegalArgumentException
     }
 
-    //5.책 수정
+    //5.책 수정, 트랜잭션 종료시 더티체킹 후 commit 된다.
+    @Transactional
+    public void 책수정하기(Long id, BookSaveReqDto dto){
+        Book savedBook = bookRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
+        savedBook.update(dto.getTitle(),dto.getAuthor());
+    }
 }

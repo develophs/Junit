@@ -14,4 +14,12 @@ public class BookSaveReqDto {
                 .author(author)
                 .build();
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
 }
