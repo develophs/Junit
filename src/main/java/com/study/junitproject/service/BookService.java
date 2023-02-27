@@ -35,11 +35,16 @@ public class BookService {
 
     //3.책 한건보기
     public BookRespDto 책한건보기(Long id){
-        Book savedBook = bookRepository.findById(id).orElseThrow(()->new RuntimeException("해당 아이디를 찾을 수 없습니다."));
+        Book savedBook = bookRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
         return new BookRespDto().toDto(savedBook);
     }
 
     //4.책 삭제
+    @Transactional
+    public void 책삭제하기(Long id){
+        bookRepository.deleteById(id);//id == null -> IllegalArgumentException
+    }
 
     //5.책 수정
 }
