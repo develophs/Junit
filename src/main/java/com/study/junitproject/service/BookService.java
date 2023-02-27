@@ -29,11 +29,15 @@ public class BookService {
     public List<BookRespDto> 책목록보기(){
         List<Book> bookList = bookRepository.findAll();
         return bookList.stream()
-                .map((b) -> new BookRespDto().toDto(b))
+                .map((book) -> new BookRespDto().toDto(book))
                 .collect(Collectors.toList());
     }
 
     //3.책 한건보기
+    public BookRespDto 책한건보기(Long id){
+        Book savedBook = bookRepository.findById(id).orElseThrow(()->new RuntimeException("해당 아이디를 찾을 수 없습니다."));
+        return new BookRespDto().toDto(savedBook);
+    }
 
     //4.책 삭제
 
