@@ -1,5 +1,6 @@
 package com.study.junitproject.service;
 
+import com.study.junitproject.domain.Book;
 import com.study.junitproject.domain.BookRepository;
 import com.study.junitproject.util.MailSender;
 import com.study.junitproject.web.dto.BookRespDto;
@@ -9,6 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,12 +35,12 @@ public class BookServiceTest {
 
     @Test
     public void 책등록하기_테스트(){
-        // given
+        //given
         BookSaveReqDto dto = new BookSaveReqDto();
         dto.setTitle("Junit스터디");
         dto.setAuthor("Jake");
 
-        // stub(가설, 행동 정의)
+        //stub(가설, 행동 정의)
         when(bookRepository.save(any())).thenReturn(dto.toEntity());
         when(mailSender.send()).thenReturn(true);
 
@@ -47,5 +51,27 @@ public class BookServiceTest {
         assertThat(bookRespDto.getTitle()).isEqualTo(dto.getTitle());
         assertThat(bookRespDto.getAuthor()).isEqualTo(dto.getAuthor());
 
+    }
+
+    @Test
+    public void 책목록보기_테스트(){
+        //given(파라미터로 들어올 데이터)
+
+        //stub(가설)
+        List<Book> books = Arrays.asList(
+                new Book(1L,"junit강의","jake"),
+                new Book(2L,"spring강의","bae")
+        );
+        when(bookRepository.findAll()).thenReturn(books);
+
+        //when(실행)
+        List<BookRespDto> bookRespDtoList = bookService.책목록보기();
+
+        //then(검증)
+        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("jake");
+
+        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("bae");
     }
 }
