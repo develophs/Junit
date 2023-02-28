@@ -27,19 +27,9 @@ public class BookApiController {
 
     // 1.책 등록
     @PostMapping("/api/v1/book")
-    public ResponseEntity<?> saveBook(@RequestBody @Valid BookSaveReqDto bookSaveReqDto,
-                                      BindingResult bindingResult){
-        //추후에 AOP처리
-        if(bindingResult.hasErrors()){
-            Map<String, String> errorMap = new HashMap<>();
-            for(FieldError error : bindingResult.getFieldErrors()){
-                errorMap.put(error.getField(),error.getDefaultMessage());
-            }
-            log.info("hasErrors={}",bindingResult.hasErrors());
-            log.info("errorMap={}",errorMap.toString());
-            return new ResponseEntity<>(new CMRespDto(-1, "실패", errorMap.toString()),HttpStatus.BAD_REQUEST); //400
-        }
-
+    public ResponseEntity<?> saveBook(@RequestBody @Valid BookSaveReqDto bookSaveReqDto){
+        //BindingResult가 존재하면 예외가 안터진다.!!!! 주의하기!!!
+        //유효성 검증에 실패하면 ExceptionHandler가 낚아챈다.
         BookRespDto bookRespDto = bookService.책등록하기(bookSaveReqDto);
         return new ResponseEntity<>(new CMRespDto(1, "성공", bookRespDto),HttpStatus.CREATED); //201
     }
