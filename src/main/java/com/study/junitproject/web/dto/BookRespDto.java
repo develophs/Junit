@@ -10,11 +10,10 @@ public class BookRespDto {
     public BookRespDto() {
     }
 
-    public BookRespDto toDto(Book book){
+    public BookRespDto (Book book){
         this.id = book.getId();
         this.title = book.getTitle();
         this.author = book.getAuthor();
-        return this;
     }
 
     public Long getId() {

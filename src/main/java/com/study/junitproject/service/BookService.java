@@ -29,14 +29,14 @@ public class BookService {
                 throw new RuntimeException("메일이 전송되지 않았습니다");
             }
         }
-        return new BookRespDto().toDto(savedBook);
+        return new BookRespDto(savedBook);
     }
 
     //2.책 목록보기
     public List<BookRespDto> 책목록보기(){
         List<Book> bookList = bookRepository.findAll();
         return bookList.stream()
-                .map((book) -> new BookRespDto().toDto(book))
+                .map(BookRespDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -44,7 +44,7 @@ public class BookService {
     public BookRespDto 책한건보기(Long id){
         Book savedBook = bookRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
-        return new BookRespDto().toDto(savedBook);
+        return new BookRespDto(savedBook);
     }
 
     //4.책 삭제
@@ -60,4 +60,5 @@ public class BookService {
                 .orElseThrow(()->new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
         savedBook.update(dto.getTitle(),dto.getAuthor());
     }
+
 }
