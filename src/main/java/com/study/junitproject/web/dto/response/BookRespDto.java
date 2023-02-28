@@ -1,4 +1,4 @@
-package com.study.junitproject.web.dto;
+package com.study.junitproject.web.dto.response;
 
 import com.study.junitproject.domain.Book;
 
