@@ -1,6 +1,7 @@
 package com.study.junitproject.web;
 
 import com.study.junitproject.service.BookService;
+import com.study.junitproject.web.dto.response.BookListRespDto;
 import com.study.junitproject.web.dto.response.BookRespDto;
 import com.study.junitproject.web.dto.request.BookSaveReqDto;
 import com.study.junitproject.web.dto.response.CMRespDto;
@@ -10,13 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -35,8 +36,10 @@ public class BookApiController {
     }
 
     // 2.책 목록보기
+    @GetMapping("/api/v1/book")
     public ResponseEntity<?> getBookList(){
-        return null;
+        BookListRespDto bookListRespDto = bookService.책목록보기();
+        return new ResponseEntity<>(new CMRespDto<>(1,"성공",bookListRespDto),HttpStatus.OK);
     }
 
     // 3.책 한건보기

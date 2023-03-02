@@ -3,6 +3,7 @@ package com.study.junitproject.service;
 import com.study.junitproject.domain.Book;
 import com.study.junitproject.domain.BookRepository;
 import com.study.junitproject.util.MailSender;
+import com.study.junitproject.web.dto.response.BookListRespDto;
 import com.study.junitproject.web.dto.response.BookRespDto;
 import com.study.junitproject.web.dto.request.BookSaveReqDto;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,15 @@ public class BookService {
     }
 
     //2.책 목록보기
-    public List<BookRespDto> 책목록보기(){
+    public BookListRespDto 책목록보기(){
         List<Book> bookList = bookRepository.findAll();
-        return bookList.stream()
+
+        List<BookRespDto> dtos = bookList.stream()
                 .map(BookRespDto::new)
                 .collect(Collectors.toList());
+
+        BookListRespDto bookListRespDto = new BookListRespDto(dtos);
+        return bookListRespDto;
     }
 
     //3.책 한건보기

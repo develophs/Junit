@@ -3,6 +3,7 @@ package com.study.junitproject.service;
 import com.study.junitproject.domain.Book;
 import com.study.junitproject.domain.BookRepository;
 import com.study.junitproject.util.MailSender;
+import com.study.junitproject.web.dto.response.BookListRespDto;
 import com.study.junitproject.web.dto.response.BookRespDto;
 import com.study.junitproject.web.dto.request.BookSaveReqDto;
 import org.junit.jupiter.api.Test;
@@ -66,14 +67,14 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
 
         //when(실행)
-        List<BookRespDto> bookRespDtoList = bookService.책목록보기();
+        BookListRespDto bookListRespDto = bookService.책목록보기();
 
         //then(검증)
-        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit강의");
-        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("jake");
+        assertThat(bookListRespDto.getItems().get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(bookListRespDto.getItems().get(0).getAuthor()).isEqualTo("jake");
 
-        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring강의");
-        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("bae");
+        assertThat(bookListRespDto.getItems().get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(bookListRespDto.getItems().get(1).getAuthor()).isEqualTo("bae");
     }
 
     @Test
