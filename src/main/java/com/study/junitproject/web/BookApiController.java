@@ -55,8 +55,10 @@ public class BookApiController {
     }
 
     // 5.책 수정하기
-    public ResponseEntity<?> updateBook(){
-        return null;
+    @PatchMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody @Valid BookSaveReqDto bookSaveReqDto){
+        BookRespDto bookRespDto = bookService.책수정하기(id, bookSaveReqDto);
+        return new ResponseEntity<>(new CMRespDto<>(1,"책 수정하기 성공",bookRespDto),HttpStatus.OK);
     }
 }
 
