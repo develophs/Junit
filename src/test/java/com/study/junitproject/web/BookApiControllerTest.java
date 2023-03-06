@@ -25,9 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BookApiControllerTest {
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
     private TestRestTemplate rt;
 
     private static ObjectMapper om;
@@ -41,7 +38,7 @@ public class BookApiControllerTest {
     }
 
     @Test
-    public void saveBook_test() throws JsonProcessingException {
+    public void saveBook_test() throws Exception {
         //given
         BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
         bookSaveReqDto.setTitle("스프링1강");
@@ -49,7 +46,6 @@ public class BookApiControllerTest {
 
         //bookSaveReqDto가 Json형태로 변형된다.
         String body = om.writeValueAsString(bookSaveReqDto);
-        log.info("body={}",body);
 
         //when
         HttpEntity<String> request = new HttpEntity<>(body,headers);
@@ -64,5 +60,7 @@ public class BookApiControllerTest {
         assertThat(title).isEqualTo("스프링1강");
         assertThat(author).isEqualTo("Jake");
     }
+
+
 
 }
