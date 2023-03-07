@@ -6,14 +6,14 @@ import lombok.Getter;
 public class CMRespDto<T> {
     private Integer code; //예시)1 성공, -1 실패
     private String msg; // 에러메시지, 성공에 대한 메시지
-    private T data;
+    private T body;
 
     public CMRespDto() {
     }
 
-    public CMRespDto(Integer code, String msg, T data) {
+    public CMRespDto(Integer code, String msg, T body) {
         this.code = code;
         this.msg = msg;
-        this.data = data;
+        this.body = body;
     }
 }
