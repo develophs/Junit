@@ -23,6 +23,7 @@ public class MockTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"mockStudy\", \"author\":\"jake\"}"))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(1))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
