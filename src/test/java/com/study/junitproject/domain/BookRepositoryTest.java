@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
+@ActiveProfiles("dev")
 @DataJpaTest //DB와 관련된 컴포넌트만 메모리에 로딩, Controller,Service관련 구동X, 구동이 가벼워진다.
 @Slf4j
 public class BookRepositoryTest {

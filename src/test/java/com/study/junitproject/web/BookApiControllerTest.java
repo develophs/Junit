@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //단위 테스트->Mock사용
 //컨트롤러만 테스트 하는것이 아님
 @Slf4j
+@ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookApiControllerTest {
 
@@ -54,6 +56,28 @@ public class BookApiControllerTest {
                 .author(author)
                 .build();
         bookRepository.save(book);
+    }
+
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void updateBook() throws Exception {
+        //given
+        Integer id = 1;
+        BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
+        bookSaveReqDto.setTitle("spring");
+        bookSaveReqDto.setAuthor("jake");
+
+        String body = om.writeValueAsString(bookSaveReqDto);
+
+        //when
+        HttpEntity<String> request = new HttpEntity<>(body,headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/"+id, HttpMethod.PUT,request,String.class);
+
+        //then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        String title = dc.read("$.body.title");
+        assertThat(title).isEqualTo("spring");
+
     }
 
     @Sql("classpath:db/tableInit.sql")
